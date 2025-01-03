@@ -12,36 +12,73 @@ class App(tk.Tk):
         self.title(Config.WINDOW_TITLE)
         self.geometry(f"{Config.WINDOW_WIDTH}x{Config.WINDOW_HEIGHT}")
 
+        # 初始化樣式
+        self.init_styles()
+
         # 初始化UI
         self.create_widgets()
-    
+
+    def init_styles(self):
+        """
+        初始化樣式
+        """
+        style = ttk.Style()
+        style.configure("NavButton.TButton", font=(Config.MAIN_FONT, 12), padding=10)
+        style.map(
+            "NavButton.TButton",
+            # background=[
+            #     ("!active", "lightgray"),
+            #     ("hover", "#d3d3d3"),
+            #     ("pressed", "#c0c0c0"),
+            #     ("selected", "#a9a9a9")
+            # ],
+            foreground=[("pressed", "yellow"), ("active", "white")],
+            background=[("pressed", "!disabled", "dark blue"), ("active", "light blue")]
+        )
+
     def create_widgets(self):
         """
         創建和佈局所有的UI組件
         """
-        
         # 標題
         title_label = ttk.Label(self, text=lang.WELLCOME, font=font.Font(family=Config.MAIN_FONT, size=18))
         title_label.pack(pady=20)
 
-        # 輸入框
-        self.input_entry = ttk.Entry(self, width=40, font=font.Font(family=Config.INPUT_FONT, size=14))
-        self.input_entry.pack(pady=10)
+        # 創建選擇區域
+        self.tab_names = [lang.TAB_1, lang.TAB_2, lang.TAB_3, lang.TAB_4]
+        self.tab_buttons: list[ttk.Button] = []
+        self.current_tab: ttk.Button | None = None
 
-        # 按鈕
-        submit_button = ttk.Button(self, text=lang.SUBMIT, command=self.on_submit)
-        submit_button.pack(pady=10)
+        tabs_frame = ttk.Frame(self)
+        tabs_frame.pack(pady=10)
 
-        # 輸出框
-        self.output_label = ttk.Label(self, text="", font=font.Font(family=Config.OUTPUT_FONT, size=14, weight="bold"))
-        self.output_label.pack(pady=20)
+        for tab_name in self.tab_names:
+            button = ttk.Button(
+                tabs_frame,
+                text=tab_name,
+                style="NavButton.TButton",  # 指定自定義樣式
+                command=lambda name=tab_name: self.select_tab(name)
+            )
+            button.pack(side=tk.LEFT, padx=5)
+            self.tab_buttons.append(button)
 
-    def on_submit(self):
+        # 顯示選擇內容的區域
+        self.tab_content_label = ttk.Label(self, text="", font=font.Font(family=Config.MAIN_FONT, size=14))
+        self.tab_content_label.pack(pady=20)
+
+        # 初始化顯示
+        self.select_tab(self.tab_names[0])
+
+    def select_tab(self, tab_name: str):
         """
-        按鈕回調函數
+        更新顯示的選擇內容
         """
-        user_input = self.input_entry.get()
-        if user_input.strip():
-            self.output_label.config(text=lang.YOUR_INPUT_IS.format(user_input))
-        else:
-            self.output_label.config(text=lang.PLEASE_INPUT)
+        if self.current_tab:
+            self.current_tab.state(["!active"])
+
+        for button in self.tab_buttons:
+            if button.cget("text") == tab_name:
+                button.state(["selected"])
+                self.current_tab = button
+
+        self.tab_content_label.config(text=f"{tab_name}")
