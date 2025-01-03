@@ -20,6 +20,10 @@ class Config:
     INPUT_WIDTH = default_section.get("INPUT_WIDTH")
     INPUT_FONT = default_section.get("INPUT_FONT")
     OUTPUT_FONT = default_section.get("OUTPUT_FONT")
+    THEME = default_section.get("THEME")
+
+    if THEME not in ("Dark", "Light"):
+        THEME = "Dark"
 
     # Language settings
     LANG = default_section.get("LANG")
