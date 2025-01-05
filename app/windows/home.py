@@ -345,8 +345,6 @@ class DownloadPage:
             command=audio_only_monitor
         )
         audio_only_checkbox.pack(side=tk.LEFT, padx=5)
-        
-        # threading.Thread(target=audio_only_monitor).start()
 
     def start_download(self):
         ydl_opts = self.options_list[self.quality_options.index(self.quality_var.get())][1]
