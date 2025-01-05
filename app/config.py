@@ -1,7 +1,8 @@
 import configparser
+import os
 
 # Create a ConfigParser object
-config = configparser.ConfigParser()
+config = configparser.ConfigParser(interpolation=None)
 
 # Read the configuration file
 config.read('config.conf')
@@ -11,9 +12,9 @@ default_section = config["DEFAULT"]
 
 class Config:
     # Window settings
-    WINDOW_TITLE = default_section.get("WINDOW_TITLE")
     WINDOW_WIDTH = default_section.get("WINDOW_WIDTH")
     WINDOW_HEIGHT = default_section.get("WINDOW_HEIGHT")
+    ICON_PATH = default_section.get("ICON_PATH")
 
     # UI settings
     MAIN_FONT = default_section.get("MAIN_FONT")
@@ -27,4 +28,9 @@ class Config:
 
     # Language settings
     LANG = default_section.get("LANG")
+
+    # User settings
+    DOWNLOAD_PATH = default_section.get("DOWNLOAD_PATH")
+    if DOWNLOAD_PATH:
+        DOWNLOAD_PATH = os.path.expandvars(DOWNLOAD_PATH)
 
