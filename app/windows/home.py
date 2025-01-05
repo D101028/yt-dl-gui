@@ -2,7 +2,7 @@ import os
 import threading
 import time
 import tkinter as tk
-from tkinter import ttk, font, filedialog
+from tkinter import ttk, font, filedialog, PhotoImage
 
 from app.config import Config
 from app.lang import lang
@@ -19,7 +19,9 @@ class App(tk.Tk):
         self.title(lang.WINDOW_TITLE)
         self.geometry(f"{Config.WINDOW_WIDTH}x{Config.WINDOW_HEIGHT}")
         if os.path.isfile(Config.ICON_PATH):
-            self.iconbitmap(Config.ICON_PATH)
+            icon = PhotoImage(file=Config.ICON_PATH)
+            # self.iconbitmap(Config.ICON_PATH)
+            self.iconphoto(False, icon)
         
         # init styles
         init_styles(Config.THEME, self.config)
