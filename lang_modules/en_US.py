@@ -26,7 +26,7 @@ BROWSE = "Browse"
 DOWNLOADING = "Downloading..."
 DOWNLOAD_COMPLETE = "Download complete!"
 OPEN_FOLDER = "Open Folder"
-SHOW_AUDIO_ONLY = "Only download audio"
+SHOW_AUDIO_ONLY = "Download audio only"
 
 # Settings Page
 

@@ -18,7 +18,7 @@ $ cd yt-dlp-gui
 Create the virtual environment and install neccessary modules. 
 ```shell
 # Create virtual environment
-$ python3 -m .venv venv
+$ python3 -m venv .venv
 
 # Activate the virtual environment
 # For Windows
