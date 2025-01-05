@@ -301,8 +301,7 @@ class DownloadPage:
             *self.quality_options
         )
         quality_dropdown.pack(side=tk.LEFT, padx=5)
-
-
+        
         def browse_folder():
             folder_selected = filedialog.askdirectory()
             if folder_selected:
@@ -316,6 +315,38 @@ class DownloadPage:
             takefocus=False
         )
         folder_button.pack(side=tk.LEFT, padx=5)
+        
+        def audio_only_monitor():
+            if audio_only_var.get():
+                print("hey")
+                new_options_list = [option for option in self.options_list if option[0].startswith("audio") or option[0] == "Best audio"]
+                new_quality_var = tk.StringVar()
+                new_quality_options = [option[0] for option in new_options_list]
+                quality_dropdown['menu'].delete(0, 'end')
+                for option in new_quality_options:
+                    quality_dropdown['menu'].add_command(label=option, command=tk._setit(new_quality_var, option))
+                self.quality_var.set(new_quality_options[0])
+                self.options_list = new_options_list
+            else:
+                self.options_list = create_video_dl_options(info)
+                self.quality_options = [option[0] for option in self.options_list]
+                quality_dropdown['menu'].delete(0, 'end')
+                for option in self.quality_options:
+                    quality_dropdown['menu'].add_command(label=option, command=tk._setit(self.quality_var, option))
+                self.quality_var.set(self.quality_options[0])
+
+        # checkbox for audio only
+        audio_only_var = tk.BooleanVar()
+        audio_only_checkbox = ttk.Checkbutton(
+            button_frame,
+            text=lang.SHOW_AUDIO_ONLY,
+            variable=audio_only_var,
+            style="TCheckbutton", 
+            command=audio_only_monitor
+        )
+        audio_only_checkbox.pack(side=tk.LEFT, padx=5)
+        
+        # threading.Thread(target=audio_only_monitor).start()
 
     def start_download(self):
         ydl_opts = self.options_list[self.quality_options.index(self.quality_var.get())][1]

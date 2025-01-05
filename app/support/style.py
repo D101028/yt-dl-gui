@@ -19,7 +19,7 @@ def init_main_theme(root_config = None) -> ttk.Style:
         root_config(background="#222222")
     
     style = ttk.Style()
-    style.theme_use("clam")
+    style.theme_use("alt")
 
     style.configure(
         "NavButton.TButton",
@@ -243,6 +243,33 @@ def init_main_theme(root_config = None) -> ttk.Style:
         relief=[
             ("pressed", "sunken"),
             ("!pressed", "flat")
+        ]
+    )
+
+    style.configure(
+        "TCheckbutton",
+        foreground="white",
+        background="#222222",
+        font=(Config.MAIN_FONT, 12),
+        indicatorcolor="#444444",
+        selectcolor="#555555",
+        padding=(4, 4),
+        borderwidth=2,
+        relief=tk.FLAT
+    )
+
+    style.map(
+        "TCheckbutton",
+        background=[
+            ("active", "#333333"),
+            ("hover", "#444444"),
+            ("pressed", "#555555"),
+            ("selected", "#555555"),
+            ("!selected", "#222222")
+        ],
+        foreground=[
+            ("disabled", "gray"),
+            ("active", "white")
         ]
     )
 
