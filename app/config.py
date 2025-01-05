@@ -14,7 +14,7 @@ class Config:
     # Window settings
     WINDOW_WIDTH = default_section.get("WINDOW_WIDTH")
     WINDOW_HEIGHT = default_section.get("WINDOW_HEIGHT")
-    ICON_PATH = default_section.get("ICON_PATH")
+    ICON_PATH = default_section.get("ICON_PATH", os.path.join(os.getcwd(), "icon.png"))
 
     # UI settings
     MAIN_FONT = default_section.get("MAIN_FONT")

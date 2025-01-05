@@ -20,7 +20,6 @@ class App(tk.Tk):
         self.geometry(f"{Config.WINDOW_WIDTH}x{Config.WINDOW_HEIGHT}")
         if os.path.isfile(Config.ICON_PATH):
             icon = PhotoImage(file=Config.ICON_PATH)
-            # self.iconbitmap(Config.ICON_PATH)
             self.iconphoto(False, icon)
         
         # init styles
