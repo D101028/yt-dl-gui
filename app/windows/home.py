@@ -18,7 +18,8 @@ class App(tk.Tk):
         # init window
         self.title(lang.WINDOW_TITLE)
         self.geometry(f"{Config.WINDOW_WIDTH}x{Config.WINDOW_HEIGHT}")
-        self.iconbitmap(Config.ICON_PATH)
+        if os.path.isfile(Config.ICON_PATH):
+            self.iconbitmap(Config.ICON_PATH)
         
         # init styles
         init_styles(Config.THEME, self.config)
