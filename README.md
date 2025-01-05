@@ -12,7 +12,7 @@ You need Python environment (Python 3.10 or above).
 Clone this repo.
 ```shell
 $ git clone git@github.com:D101028/yt-dl-gui.git
-cd yt-dlp-gui
+$ cd yt-dlp-gui
 ```
 
 Create the virtual environment and install neccessary modules. 
