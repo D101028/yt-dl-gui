@@ -229,8 +229,9 @@ class DownloadPage:
 
         thumbnail_url = info.get("thumbnail")
         if thumbnail_url:
-            download_thumbnail(thumbnail_url, "./temp/thumbnail.jpg")
-            image = Image.open("temp/thumbnail.jpg")
+            filepath = os(os.getcwd(), "temp/thumbnail.jpg")
+            download_thumbnail(thumbnail_url, filepath)
+            image = Image.open(filepath)
             image = image.resize((240, int(image.height * 240 / image.width)))
             thumbnail = ImageTk.PhotoImage(image)
             thumbnail_label = ttk.Label(self.dl_container, image=thumbnail)
