@@ -1,5 +1,6 @@
 import os
 import requests
+from typing import Literal
 
 from yt_dlp import YoutubeDL
 
@@ -111,7 +112,7 @@ def download_thumbnail(url, path):
         return path
     return None
 
-def format_summary(info: dict) -> str:
+def format_summary(info: dict) -> list[dict[str, str | None]]:
     summaries = []
     for f in info['formats']:
         summary = {
@@ -128,34 +129,62 @@ def format_summary(info: dict) -> str:
 
     return summaries
 
-def create_video_dl_options(info: dict) -> list[tuple[str, dict]]:
+def remove_duplicates(items: list, func = lambda a, b: a == b) -> list:
     result = []
-    result.append(("Best quality", {
-        "format": "bestvideo+bestaudio/best", 
-        "outtmpl": "%(title)s.%(ext)s", 
-        "quiet": False, 
-        "logger": MyLogger
-    }))
-    result.append(("Best audio", {
-        "format": "bestaudio", 
-        "outtmpl": "%(title)s.%(ext)s", 
-        "quiet": False, 
-        "postprocessors": [], 
-        "logger": MyLogger
-    }))
+    for item in items:
+        if not any(func(item, i) for i in result):
+            result.append(item)
+    return result
 
-    summaries = format_summary(info)
+def format_filter(summaries: list[dict[str, str | None]], filter_type: Literal['basic', 'video', 'audio', 'none']) -> list[dict[str, str | None]]:
+    match filter_type:
+        case 'basic':
+            result = []
+            keys = ("best", "4320p", "2160p", "1440p", "1080p", "720p", "480p", "360p", "240p", "144p")
+            for summary in summaries:
+                if summary['format_note'] is None:
+                    continue
+                if any(i in summary['format_note'] for i in keys):
+                    result.append(summary)
+            result = remove_duplicates(result)
+            return result
+        case 'video':
+            result = []
+            for summary in summaries:
+                if summary['resolution'] != 'audio only':
+                    result.append(summary)
+            return result
+        case 'audio':
+            result = []
+            for summary in summaries:
+                if summary['resolution'] == 'audio only':
+                    result.append(summary)
+            return result
+        case _:
+            return summaries
+
+def create_video_dl_options(info: dict, filter_type: Literal['basic', 'video', 'audio', 'none']) -> list[tuple[str, dict]]:
+    result = []
+    if filter_type not in ('audio',):
+        result.append(("Best quality", {
+            "format": "bestvideo+bestaudio/best", 
+            "outtmpl": "%(title)s.%(ext)s", 
+            "quiet": False, 
+            "logger": MyLogger
+        }))
+    if filter_type not in ('video',):
+        result.append(("Best audio", {
+            "format": "bestaudio/best", 
+            "outtmpl": "%(title)s.%(ext)s", 
+            "quiet": False, 
+            "postprocessors": [], 
+            "logger": MyLogger
+        }))
+
+    summaries = format_filter(format_summary(info), filter_type)
     for summary in summaries:
         fmt = summary['format_id']
-        if summary["resolution"] != "audio only":
-            options = {
-                "format": fmt,
-                "outtmpl": "%(title)s.%(ext)s",
-                "quiet": False, 
-                "logger": MyLogger
-            }
-            result.append((f"{summary['resolution']}-{summary['format_note']}-{summary['format_id']}", options))
-        else:
+        if summary["resolution"] == "audio only":
             options = {
                 "format": fmt,
                 "outtmpl": "%(title)s.%(ext)s",
@@ -163,7 +192,14 @@ def create_video_dl_options(info: dict) -> list[tuple[str, dict]]:
                 "logger": MyLogger
             }
             result.append((f"audio-{summary['format_note']}-{summary['acodec']}-{summary['format_id']}", options))
-
+        else:
+            options = {
+                "format": fmt,
+                "outtmpl": "%(title)s.%(ext)s",
+                "quiet": False, 
+                "logger": MyLogger
+            }
+            result.append((f"{summary['resolution']}-{summary['format_note']}-{summary['format_id']}", options))
     return result
 
 def download_by_options(url: str, options: dict, dl_path: str):
@@ -171,3 +207,4 @@ def download_by_options(url: str, options: dict, dl_path: str):
     ydl_opts["outtmpl"] = os.path.join(dl_path, ydl_opts["outtmpl"])
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
+

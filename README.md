@@ -7,7 +7,11 @@
 
 ## Getting started
 
-You need Python environment (Python 3.10 or above). 
+You need Python + tkinter environment (Python 3.10 or above). 
+```shell
+# on Ubuntu for example
+$ sudo apt install python3, python3-tk
+```
 
 Clone this repo.
 ```shell

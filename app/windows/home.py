@@ -7,8 +7,9 @@ from tkinter import ttk, font, filedialog, PhotoImage
 from app.config import Config
 from app.lang import lang
 from app.support.style import init_styles
-from app.support.tk_ext import add_placeholder, parse_ansi_text, wrap_text
+from app.support.tk_ext import add_placeholder, parse_ansi_text, wrap_text, open_directory
 from app.support.yt import analyze_url, get_video_info, get_playlist_info, download_thumbnail, create_video_dl_options, download_by_options, MyLogger
+from app.windows.error import ErrorWindow
 from PIL import Image, ImageTk
 
 class App(tk.Tk):
@@ -293,17 +294,21 @@ class DownloadPage:
         )
         download_button.pack(side=tk.LEFT, padx=5)
 
-        self.options_list = create_video_dl_options(info)
+        self.options_list = create_video_dl_options(info, 'basic')
 
         self.quality_var = tk.StringVar()
         self.quality_options = [option[0] for option in self.options_list]
-        quality_dropdown = ttk.OptionMenu(
+        quality_dropdown = ttk.Combobox(
             button_frame, 
-            self.quality_var, 
-            self.quality_options[0], 
-            *self.quality_options
+            textvariable=self.quality_var, 
+            values=self.quality_options,
+            state="readonly",
+            style="TCombobox"
         )
+        quality_dropdown.config(width=int(max(len(line) for line in self.quality_options)*0.9)+1)
         quality_dropdown.pack(side=tk.LEFT, padx=5)
+        self.quality_var.set(self.quality_options[0])
+        # quality_dropdown.bind("<<ComboboxSelected>>", self.on_quality_selected)
         
         def browse_folder():
             folder_selected = filedialog.askdirectory()
@@ -321,21 +326,14 @@ class DownloadPage:
         
         def audio_only_monitor():
             if audio_only_var.get():
-                new_options_list = [option for option in self.options_list if option[0].startswith("audio") or option[0] == "Best audio"]
-                new_quality_var = tk.StringVar()
-                new_quality_options = [option[0] for option in new_options_list]
-                quality_dropdown['menu'].delete(0, 'end')
-                for option in new_quality_options:
-                    quality_dropdown['menu'].add_command(label=option, command=tk._setit(new_quality_var, option))
-                self.quality_var.set(new_quality_options[0])
+                self.options_list = create_video_dl_options(info, 'audio')
             else:
-                new_options_list = [option for option in self.options_list if not option[0].startswith("audio") and option[0] != "Best audio"]
-                new_quality_var = tk.StringVar()
-                new_quality_options = [option[0] for option in new_options_list]
-                quality_dropdown['menu'].delete(0, 'end')
-                for option in new_quality_options:
-                    quality_dropdown['menu'].add_command(label=option, command=tk._setit(new_quality_var, option))
-                self.quality_var.set(new_quality_options[0])
+                self.options_list = create_video_dl_options(info, 'basic')
+            
+            self.quality_options = [option[0] for option in self.options_list]
+            quality_dropdown['values'] = self.quality_options
+            quality_dropdown.config(width=int(max(len(line) for line in self.quality_options)*0.9)+1)
+            self.quality_var.set(self.quality_options[0])
         
         # checkbox for audio only
         audio_only_var = tk.BooleanVar()
@@ -348,12 +346,12 @@ class DownloadPage:
         )
         audio_only_checkbox.pack(side=tk.LEFT, padx=5)
 
-        # init
-        audio_only_monitor()
-
     def start_download(self):
         ydl_opts = self.options_list[self.quality_options.index(self.quality_var.get())][1]
         dl_path = self.folder_path.get()
+        if not os.path.isdir(dl_path):
+            ErrorWindow(lang.INVALID_DIRECTORY.format(dl_path))
+            return 
         url = self.url
         self.reload_frame()
 
@@ -407,7 +405,7 @@ class DownloadPage:
                 output_frame,
                 text=lang.OPEN_FOLDER,
                 style="OpenFolder.TButton",
-                command=lambda: os.startfile(dl_path),
+                command=lambda: open_directory(dl_path, ErrorWindow),
                 takefocus=False
             )
             open_folder_button.pack()

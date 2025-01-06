@@ -273,6 +273,39 @@ def init_main_theme(root_config = None) -> ttk.Style:
         ]
     )
 
+    style.configure(
+        "TCombobox",
+        foreground="white",
+        background="#333333",
+        fieldbackground="#333333",
+        selectbackground="#333333",
+        selectforeground="white",
+        arrowcolor="white",
+        padding=(4, 4),
+        font=(Config.INPUT_FONT, 12),
+        borderwidth=2,
+        relief=tk.FLAT
+    )
+
+    style.map(
+        "TCombobox",
+        background=[
+            ("active", "#444444"),
+            ("hover", "#444444"),
+            ("pressed", "#555555"),
+            ("selected", "#555555"),
+            ("!selected", "#333333")
+        ],
+        foreground=[
+            ("disabled", "gray"),
+            ("active", "white")
+        ],
+        fieldbackground=[
+            ("readonly", "#333333"),
+            ("!readonly", "#333333")
+        ]
+    )
+
     return style
 
 def load_light_theme(style: ttk.Style, root_config = None) -> None:
@@ -326,6 +359,35 @@ def load_light_theme(style: ttk.Style, root_config = None) -> None:
         background="white",
         fieldbackground="white",
         insertcolor="black"
+    )
+
+    style.configure(
+        "TCombobox",
+        foreground="black",
+        background="white",
+        fieldbackground="white",
+        selectbackground="white",
+        selectforeground="black",
+        arrowcolor="black"
+    )
+
+    style.map(
+        "TCombobox",
+        background=[
+            ("active", "#e0e0e0"),
+            ("hover", "#d9d9d9"),
+            ("pressed", "#c0c0c0"),
+            ("selected", "#c0c0c0"),
+            ("!selected", "white")
+        ],
+        foreground=[
+            ("disabled", "gray"),
+            ("active", "black")
+        ],
+        fieldbackground=[
+            ("readonly", "white"),
+            ("!readonly", "white")
+        ]
     )
 
 def load_dark_theme(style: ttk.Style, root_config = None) -> None:

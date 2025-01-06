@@ -16,9 +16,11 @@ class Config:
     WINDOW_HEIGHT = default_section.get("WINDOW_HEIGHT")
     ICON_PATH = default_section.get("ICON_PATH", os.path.join(os.getcwd(), "icon.png"))
 
+    if not os.path.isfile(ICON_PATH):
+        print("file not found:", ICON_PATH)
+
     # UI settings
     MAIN_FONT = default_section.get("MAIN_FONT")
-    INPUT_WIDTH = default_section.get("INPUT_WIDTH")
     INPUT_FONT = default_section.get("INPUT_FONT")
     OUTPUT_FONT = default_section.get("OUTPUT_FONT")
     THEME = default_section.get("THEME")
@@ -31,6 +33,13 @@ class Config:
 
     # User settings
     DOWNLOAD_PATH = default_section.get("DOWNLOAD_PATH")
+
     if DOWNLOAD_PATH:
         DOWNLOAD_PATH = os.path.expandvars(DOWNLOAD_PATH)
+    if not os.path.isdir(DOWNLOAD_PATH):
+        print("directory not found:", DOWNLOAD_PATH)
+        DOWNLOAD_PATH = os.path.join(os.getcwd(), "download")
+        if not os.path.isdir(DOWNLOAD_PATH):
+            os.mkdir(DOWNLOAD_PATH)
+        print("set default download directory:", DOWNLOAD_PATH)
 

@@ -1,3 +1,5 @@
+import platform
+import subprocess
 import re
 import tkinter as tk
 
@@ -68,19 +70,41 @@ def parse_ansi_text(log):
 def wrap_text(text: str, line_length: int) -> str:
     words = text.split()
     lines = []
-    current_line = []
+    current_line = ""
     current_length = 0
 
-    for word in words:
-        if current_length + len(word) + len(current_line) > line_length:
-            lines.append(" ".join(current_line))
-            current_line = [word]
-            current_length = len(word)
+    pos = 0
+    while pos < len(words):
+        word = words[pos]
+        if current_length + len(word) > line_length:
+            cut_pos = line_length - current_length
+            current_line += word[:cut_pos]
+            lines.append(current_line)
+            words[pos] = word[cut_pos:]
+            current_line = ""
         else:
-            current_line.append(word)
-            current_length += len(word)
-
-    if current_line:
-        lines.append(" ".join(current_line))
+            current_line += word + " "
+            pos += 1
+    else:
+        if current_line != "":
+            lines.append(current_line)
 
     return "\n".join(lines)
+
+
+def open_directory(directory_path, error_func = lambda x: None):
+    system = platform.system()
+    try:
+        if system == "Windows":
+            import os
+            os.startfile(directory_path)
+        elif system == "Darwin":  # macOS
+            subprocess.run(['open', directory_path], check=True)
+        elif system == "Linux":
+            subprocess.run(['xdg-open', directory_path], check=True)
+        else:
+            error_func(f"Unsupported platform: {system}")
+    except Exception as e:
+        error_func("Failed to open directory: {e}")
+
+    return 0

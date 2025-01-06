@@ -27,6 +27,7 @@ DOWNLOADING = "Downloading..."
 DOWNLOAD_COMPLETE = "Download complete!"
 OPEN_FOLDER = "Open Folder"
 SHOW_AUDIO_ONLY = "Download audio only"
+INVALID_DIRECTORY = "Invalid directory: {}"
 
 # Settings Page
 
