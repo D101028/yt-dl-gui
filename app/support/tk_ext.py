@@ -2,6 +2,7 @@ import platform
 import subprocess
 import re
 import tkinter as tk
+from typing import Literal
 
 ANSI_COLOR_MAP = {
     '30': 'black',
@@ -18,7 +19,7 @@ ANSI_COLOR_MAP = {
     '93': 'yellow' 
 }
 
-def add_placeholder(entry: tk.Entry, placeholder_text):
+def add_placeholder(entry: tk.Entry, placeholder_text: str) -> None:
     # 設置預設文字
     entry.insert(0, placeholder_text)
     entry.config(style="PlaceHolder.TEntry")
@@ -37,7 +38,7 @@ def add_placeholder(entry: tk.Entry, placeholder_text):
     entry.bind("<FocusIn>", on_focus_in)
     entry.bind("<FocusOut>", on_focus_out)
 
-def split_by_ansi_code(input_string):
+def split_by_ansi_code(input_string: str) -> list[tuple[str, str]]:
     # 正則表達式匹配 ANSI 控制碼
     ansi_pattern = r"(\033\[[0-9;]*m)"
     
@@ -56,7 +57,7 @@ def split_by_ansi_code(input_string):
     
     return result
 
-def parse_ansi_text(log):
+def parse_ansi_text(log: str) -> list[tuple[str, str]]:
     """Parse ANSI escape codes and return text with styles"""
     matches = split_by_ansi_code(log)
     result = []
@@ -92,7 +93,7 @@ def wrap_text(text: str, line_length: int) -> str:
     return "\n".join(lines)
 
 
-def open_directory(directory_path, error_func = lambda x: None):
+def open_directory(directory_path, error_func = lambda x: print(x)) -> Literal[1, 0]:
     system = platform.system()
     try:
         if system == "Windows":
@@ -104,7 +105,9 @@ def open_directory(directory_path, error_func = lambda x: None):
             subprocess.run(['xdg-open', directory_path], check=True)
         else:
             error_func(f"Unsupported platform: {system}")
+            return 1
     except Exception as e:
         error_func("Failed to open directory: {e}")
+        return 1
 
     return 0

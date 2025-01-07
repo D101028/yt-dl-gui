@@ -1,0 +1,3 @@
+other than best quality, other video only format will dl video without audio
+add ffmpeg to enable 自定義 format settings
+add basic, advanced choices for format choosing
