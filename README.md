@@ -1,11 +1,8 @@
 # yt-dl-gui
  This is an app based on tkinter and yt-dlp, which can download youtube resources graphically. 
  
-<div align="center">
-    <a href="https://github.com/D101028/yt-dl-gui/archive/refs/heads/main.zip" style="display: inline-block;padding: 10px 20px;font-size: 16px;font-weight: bold;color: white;background-color: #28a745;border: 3px solid white;border-radius: 10px;text-decoration: none;text-align: center;cursor: pointer;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);transition: background-color 0.3s ease, box-shadow 0.3s ease;" download>
-        Download
-    </a>
-</div>
+[![Download](https://img.shields.io/badge/Download-Green.svg?style=flat&logo=github)](https://github.com/D101028/yt-dl-gui/archive/refs/heads/main.zip)
+
 
 ## Features
 - A simple GUI for yt-dlp
