@@ -38,7 +38,7 @@ class Config:
         DOWNLOAD_PATH = os.path.expandvars(DOWNLOAD_PATH)
     if not os.path.isdir(DOWNLOAD_PATH):
         print("directory not found:", DOWNLOAD_PATH)
-        DOWNLOAD_PATH = os.path.join(os.getcwd(), "download")
+        DOWNLOAD_PATH = os.path.join(os.getcwd(), "downloads")
         if not os.path.isdir(DOWNLOAD_PATH):
             os.mkdir(DOWNLOAD_PATH)
         print("set default download directory:", DOWNLOAD_PATH)
