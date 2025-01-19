@@ -36,6 +36,16 @@ class MyLogger:
     def clear_logging(cls):
         cls.logging = ""
 
+class MyOptions:
+    def __init__(self, name: str, ydl_opts: dict):
+        self.name = name
+        self.ydl_opts = ydl_opts
+
+    def __eq__(self, other):
+        if not isinstance(other, MyOptions):
+            return False
+        return self.name == other.name
+
 def check_url_accessibility(url: str):
     try:
         response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})

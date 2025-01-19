@@ -347,7 +347,8 @@ class DownloadPage:
         audio_only_checkbox.pack(side=tk.LEFT, padx=5)
 
     def start_download(self):
-        ydl_opts = self.options_list[self.quality_options.index(self.quality_var.get())][1]
+        user_choice = self.quality_var.get()
+        ydl_opts = self.options_list[self.quality_options.index(user_choice)][1]
         dl_path = self.folder_path.get()
         if not os.path.isdir(dl_path):
             ErrorWindow(lang.INVALID_DIRECTORY.format(dl_path))
@@ -355,7 +356,11 @@ class DownloadPage:
         url = self.url
         self.reload_frame()
 
-        main_thread = threading.Thread(target=download_by_options, args=(url, ydl_opts, dl_path))
+        def download_thread():
+            download_by_options(url, ydl_opts, dl_path)
+            # if ydl_opts.get("format") != "bestvideo+bestaudio/best" and ydl_opts.get("")
+
+        main_thread = threading.Thread(target=download_thread)
         output_frame = ttk.Frame(self.dl_container, style="TFrame")
         output_frame.pack(fill=tk.BOTH, expand=True)
 
