@@ -232,6 +232,9 @@ class DownloadPage:
         thumbnail_url = info.get("thumbnail")
         if thumbnail_url:
             filepath = os.path.join(os.getcwd(), "temp/thumbnail.jpg")
+            folder = os.path.dirname(filepath)
+            if not os.path.isdir(folder):
+                os.makedirs(folder)
             download_thumbnail(thumbnail_url, filepath)
             image = Image.open(filepath)
             image = image.resize((240, int(image.height * 240 / image.width)))

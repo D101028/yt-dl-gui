@@ -1,11 +1,46 @@
 import configparser
 import os
 
+default_config = """
+# Configuration file for yt-dl-gui
+# This file contains settings and preferences for the yt-dl-gui application.
+# Modify the values in this file to customize the behavior of the application.
+
+[DEFAULT]
+# Window settings
+# WINDOW_WIDTH, WINDOW_HEIGHT: The width and height of the application window
+# ICON_PATH: Specifies the file path to the icon used in the application. (default: icon.png)
+WINDOW_WIDTH=850
+WINDOW_HEIGHT=760
+ICON_PATH=icon.png
+
+# Font settings
+MAIN_FONT=Arial
+INPUT_FONT=Consolas
+OUTPUT_FONT=Consolas
+THEME=Dark
+
+# Language settings
+# Supported languages: en_US, zh_TW
+LANGUAGE=en_US
+
+# User settings
+# This is the default download directory. (default: ./downloads)
+DOWNLOAD_PATH=%USERPROFILE%\Downloads
+
+"""
+
 # Create a ConfigParser object
 config = configparser.ConfigParser(interpolation=None)
 
 # Read the configuration file
-config.read('config.conf')
+config_file = 'config.conf'
+if not os.path.isfile(config_file):
+    with open(config_file, 'w') as file:
+        file.write(default_config)
+
+# Read the configuration file
+config.read(config_file)
 
 # Accessing the data
 default_section = config["DEFAULT"]
