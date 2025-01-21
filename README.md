@@ -10,6 +10,12 @@
 
 ## Getting started
 
+### Build by .exe
+
+View release note. 
+
+### Build by source code
+
 You need Python + tkinter environment (Python 3.10 or above). 
 ```shell
 # on Ubuntu for example
