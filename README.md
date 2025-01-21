@@ -10,11 +10,10 @@
 
 ## Getting started
 
-### Build by .exe
-
+### Using executable file
 View release note. 
 
-### Build by source code
+### Build from source
 
 You need Python + tkinter environment (Python 3.10 or above). 
 ```shell
@@ -25,7 +24,7 @@ $ sudo apt install python3, python3-tk
 Clone this repo.
 ```shell
 $ git clone git@github.com:D101028/yt-dl-gui.git
-$ cd yt-dlp-gui
+$ cd yt-dl-gui
 ```
 
 Create the virtual environment and install neccessary modules. 
