@@ -427,7 +427,7 @@ class DownloadPage:
         lebel = ttk.Label(
             self.dl_container, 
             style="TLabel", 
-            text=f"{lang.PLAYLIST_INFO.format(info['title'])}", 
+            text=f"{lang.PLAYLIST_INFO.format(info['title'])} (still maintaining...)", 
             font=font.Font(family=Config.MAIN_FONT, size=14)
         )
         lebel.pack()
@@ -442,7 +442,7 @@ class SettingsPage:
         self.lebel = ttk.Label(
             self.master, 
             style="TLabel", 
-            text="", 
+            text="still maintaining...", 
             font=font.Font(family=Config.MAIN_FONT, size=14)
         )
         self.lebel.pack(pady=20)
@@ -458,7 +458,7 @@ class UpdatePage:
         self.lebel = ttk.Label(
             self.master, 
             style="TLabel", 
-            text="", 
+            text="(still maintaining...)", 
             font=font.Font(family=Config.MAIN_FONT, size=14)
         )
         self.lebel.pack(pady=20)

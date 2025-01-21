@@ -7,11 +7,11 @@ lang_modules = {
 }
 
 # Language settings
-# lang = lang_modules.get(Config.LANG)
-lang = en_US # for testing
+lang: en_US = lang_modules.get(Config.LANGUAGE)
+# lang = en_US # for testing
 # lang = zh_TW # for testing
 
 # Check if the language setting is valid
 if lang is None:
-    raise ValueError("Invalid language setting")
+    raise ValueError(f"Invalid language setting: {Config.LANGUAGE}")
 

@@ -1,7 +1,7 @@
 import configparser
 import os
 
-default_config = """
+default_config = r"""
 # Configuration file for yt-dl-gui
 # This file contains settings and preferences for the yt-dl-gui application.
 # Modify the values in this file to customize the behavior of the application.
@@ -64,7 +64,7 @@ class Config:
         THEME = "Dark"
 
     # Language settings
-    LANG = default_section.get("LANG")
+    LANGUAGE = default_section.get("LANGUAGE")
 
     # User settings
     DOWNLOAD_PATH = default_section.get("DOWNLOAD_PATH")
