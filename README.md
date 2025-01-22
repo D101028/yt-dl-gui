@@ -1,4 +1,6 @@
-# ![App Icon](icon.png) yt-dl-gui
+<img src="https://github.com/D101028/yt-dl-gui/blob/main/icon.png?raw=true" alt="logo" align="left" height="100"/>
+
+# yt-dl-gui
  This is an app based on tkinter and yt-dlp, which can download youtube resources graphically. 
  
 [![Download](https://img.shields.io/badge/Download-Green.svg?style=flat&logo=github)](https://github.com/D101028/yt-dl-gui/archive/refs/heads/main.zip)
